@@ -108,12 +108,3 @@ graph TD
 └── uploads/              # Direktori penyimpanan file CSV/XLSX hasil upload
 ```
 
----
-
-## 🎓 Latar Belakang Magang
-- **Nama Mahasiswa**: Lutfia Aisyah Putri
-- **NIM**: 123450074
-- **Program Studi**: S1 Sains Data, Institut Teknologi Sumatera (ITERA)
-- **Periode Magang**: 1 Juli 2025 – 15 Agustus 2025
-- **Tempat Magang**: Pusat Riset Sains Data dan Informasi (PRSDI), Badan Riset dan Inovasi Nasional (BRIN)
-- **Pembimbing**: Rumadi, S.T., M.T.
