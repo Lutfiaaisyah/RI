@@ -1,53 +1,53 @@
-# Research Intelligence (RI) - Structuring Research Centers using Hierarchical Topic Models
+# Research Intelligence (RI) - Penataan Pusat Riset Menggunakan Hierarchical Topic Models
 
-An end-to-end data-driven web application developed during a Data Science Internship at the **Research Center for Data and Information Sciences, National Research and Innovation Agency (Pusat Riset Sains Data dan Informasi - PRSDI BRIN)**. 
+Sebuah aplikasi web *end-to-end* berbasis sains data yang dikembangkan selama kegiatan **Magang Mandiri di Pusat Riset Sains Data dan Informasi, Badan Riset dan Inovasi Nasional (PRSDI - BRIN)** KST Samaun Samadukun Bandung.
 
-This project aims to automate the process of mapping research documents (journals, papers) into the **ACM Computing Classification System (ACM CCS 2012)** taxonomy, identifying latent research topics using **BERTopic**, and dynamically grouping research fields into fundamental research groups using Large Language Models (LLMs).
+Projek ini bertujuan untuk mengotomatisasi pemetaan dokumen publikasi ilmiah (jurnal, paper) ke dalam taksonomi standar internasional **ACM Computing Classification System (ACM CCS 2012)**, mendeteksi topik penelitian laten menggunakan **BERTopic**, dan mengelompokkan bidang ilmu riset secara dinamis ke dalam Kelompok Riset (*Research Groups*) utama menggunakan Large Language Models (LLM).
 
 ---
 
-## 🚀 Key Features
+## 🚀 Fitur Utama
 
-1. **Academic Data Preprocessing**
-   - Cleans academic titles and abstracts by removing copyright notices, editorial metadata, structural labels (e.g., *Design/methodology/approach*), and non-ASCII characters.
+1. **Praproses Data Akademik**
+   - Membersihkan teks judul dan abstrak publikasi dari gangguan teks seperti informasi hak cipta (copyright), metadata publikasi, label struktural (contoh: *Design/methodology/approach*), dan karakter non-ASCII.
 
-2. **ACM CCS Taxonomy Alignment**
-   - Automatically maps papers to the ACM CCS taxonomy using fuzzy string matching (`RapidFuzz`) based on a custom threshold of 80.
-   - Computes academic field similarities using **TF-IDF Vectorization** and **Cosine Similarity** to output inter-field relation heatmaps.
+2. **Penyelarasan Taksonomi ACM CCS**
+   - Mengklasifikasikan dokumen secara otomatis ke taksonomi ACM CCS 2012 menggunakan pencocokan kata kunci tidak persis (*fuzzy string matching*) melalui pustaka `RapidFuzz` dengan threshold kemiripan 80.
+   - Menganalisis tingkat hubungan antar bidang ilmu yang terdeteksi menggunakan kombinasi **TF-IDF Vectorization** dan **Cosine Similarity** untuk menghasilkan visualisasi heatmap interaktif.
 
-3. **Advanced Topic Modeling (BERTopic)**
-   - Utilizes state-of-the-art unsupervised topic modeling using **BERTopic**:
+3. **Pemodelan Topik Tingkat Lanjut (BERTopic)**
+   - Mengimplementasikan algoritma pemodelan topik modern berbasis **BERTopic**:
      - **Embeddings**: SentenceTransformers (`all-MiniLM-L6-v2`)
      - **Dimensionality Reduction**: UMAP
      - **Clustering**: HDBSCAN
-     - **Topic Representation**: c-TF-IDF & KeyBERT-Inspired representation.
-   - Automatically optimizes `min_cluster_size` parameters by evaluating Topic Coherence ($c_v$) scores programmatically using Gensim.
+     - **Topic Representation**: c-TF-IDF & representasi berbasis KeyBERT.
+   - Mengoptimalkan parameter `min_cluster_size` secara otomatis berdasarkan metrik **Topic Coherence ($c_v$)** menggunakan pustaka Gensim.
 
-4. **AI-Powered Research Group Clustering**
-   - Integrates the **Groq API (Llama 3 70B)** to group matching ACM CCS research fields into a specified number of fundamental research groups based on thematic similarity.
-   - Generates structured, descriptive research group names, descriptions, and allocations in JSON format.
+4. **Pengelompokan Kelompok Riset Berbasis AI**
+   - Mengintegrasikan **Groq API (Llama 3 70B)** untuk mengelompokkan bidang-bidang ilmu ACM CCS yang terdeteksi secara otomatis ke dalam sejumlah Kelompok Riset (*Fundamental Research Groups*) tematis.
+   - Menghasilkan nama kelompok riset, deskripsi fokus kelompok, dan pembagian bidang ilmu terkait dalam format JSON terstruktur.
 
-5. **Interactive Web Dashboard**
-   - **Analytics Page**: Displays overall dataset statistics (documents, research groups, distinct fields).
-   - **Upload Page**: Supports CSV and XLSX files with upload status tracking.
-   - **Interactive Visualizations**: Renders dynamic, responsive Plotly charts representing the Top 10 fields and interactive hierarchical topic structures.
+5. **Dashboard Web Interaktif**
+   - **Halaman Analytics**: Menampilkan statistik umum (total dokumen, total kelompok riset, sebaran bidang ilmu).
+   - **Halaman Upload**: Mendukung pengunggahan dokumen riset berformat CSV dan XLSX.
+   - **Visualisasi Interaktif**: Menyajikan grafik Plotly.js interaktif untuk Top 10 Bidang Ilmu dan struktur hierarki topik riset.
 
 ---
 
-## 🛠️ Architecture Workflow
+## 🛠️ Alur Arsitektur Sistem
 
 ```mermaid
 graph TD
-    A[Upload CSV/XLSX Jurnal] --> B[Data Preprocessing]
+    A[Unggah CSV/XLSX Jurnal] --> B[Praproses Teks]
     B --> C{Pilihan Metode Analisis}
     
-    C -->|Unsupervised: BERTopic| D[Sentence Embedding all-MiniLM-L6-v2]
-    D --> E[Clustering HDBSCAN & Optimization cv Coherence]
-    E --> F[Hierarchical Topic Visualization]
+    C -->|Metode Unsupervised: BERTopic| D[Sentence Embedding all-MiniLM-L6-v2]
+    D --> E[Clustering HDBSCAN & Optimasi cv Coherence]
+    E --> F[Visualisasi Hierarki Topik]
     
-    C -->|Taxonomy: ACM Keyword Match| G[Fuzzy Matching RapidFuzz threshold >= 80]
+    C -->|Metode Taksonomi: ACM Keyword Match| G[Fuzzy Matching RapidFuzz threshold >= 80]
     G --> H[Cosine Similarity & Heatmap]
-    G --> I[Thematic Grouping LLM Groq Llama 3]
+    G --> I[Grouping Tematis LLM Groq Llama 3]
     
     F --> J[Web Dashboard UI]
     H --> J
@@ -56,63 +56,64 @@ graph TD
 
 ---
 
-## 📦 Tech Stack
+## 📦 Spesifikasi Teknologi
 
 - **Backend**: Python 3.x, Flask, Pandas, Scikit-learn, Scipy, SentenceTransformers, BERTopic, Gensim, RapidFuzz, Requests (Groq API).
-- **Frontend**: HTML5, Vanilla CSS (Custom Maroon theme inspired by BRIN), JavaScript, Plotly.js.
+- **Frontend**: HTML5, Vanilla CSS (Desain kustom bertema Merah Marun BRIN), JavaScript, Plotly.js.
 
 ---
 
-## 💻 Installation & Setup
+## 💻 Instalasi & Cara Menjalankan
 
-1. **Clone the repository**
+1. **Clone repositori**
    ```bash
-   git clone https://github.com/your-username/RI.app.git
-   cd RI.app
+   git clone https://github.com/Lutfiaaisyah/RI.git
+   cd RI
    ```
 
-2. **Install dependencies**
+2. **Install dependensi library**
    ```bash
    pip install -r requirements.txt
    ```
 
-3. **Set up API Key**
-   Configure your Groq API Key inside `backend/models/model_match.py` or set it as an environment variable:
-   ```python
-   api_key = "YOUR_GROQ_API_KEY"
+3. **Atur API Key**
+   Atur Groq API Key Anda pada file konfigurasi environment variable sistem Anda:
+   ```bash
+   set GROQ_API_KEY="ISI_API_KEY_GROQ_ANDA"
    ```
 
-4. **Run the Application**
+4. **Jalankan Aplikasi**
    ```bash
    python app.py
    ```
-   Open `http://127.0.0.1:5000` in your web browser.
+   Buka alamat `http://127.0.0.1:5000` pada web browser Anda.
 
 ---
 
-## 📂 Project Structure
+## 📂 Struktur Projek
 
 ```text
-├── app.py                # Main Flask entrypoint
-├── requirements.txt      # List of project dependencies
+├── app.py                # File utama Flask backend
+├── requirements.txt      # Daftar dependensi library Python
 ├── backend/
 │   └── models/
-│       ├── preprocessing.py  # Data cleaning and filtering
-│       ├── model_bert.py     # BERTopic fitting and parameter optimization
-│       └── model_match.py    # ACM fuzzy matching and Groq integration
-├── dataset/              # Cleaned ACM CCS keyword reference data
-├── save_models/          # Cached pre-trained UMAP and CountVectorizer models
+│       ├── preprocessing.py  # Modul pembersihan data akademik
+│       ├── model_bert.py     # Pipeline BERTopic dan optimasi coherence
+│       └── model_match.py    # Modul fuzzy matching ACM & integrasi Groq LLM
+├── dataset/              # Data referensi kata kunci taksonomi ACM CCS
+├── save_models/          # Cache model konfigurasi UMAP dan CountVectorizer
 ├── frontend/
-│   ├── static/           # Stylesheets, custom images, and fonts
-│   └── templates/        # HTML pages (index.html)
-└── uploads/              # Directory for storing uploaded CSV/XLSX datasets
+│   ├── static/           # Stylesheet CSS, file js, dan aset gambar
+│   └── templates/        # Template halaman HTML (index.html)
+└── uploads/              # Direktori penyimpanan file CSV/XLSX hasil upload
 ```
 
 ---
 
-## 🎓 Internship Background
-- **Student Name**: Lutfia Aisyah Putri
-- **University**: Institut Teknologi Sumatera (ITERA)
-- **Internship Period**: July 1, 2025 – August 15, 2025
-- **Research Center**: Pusat Riset Sains Data dan Informasi (PRSDI), Badan Riset dan Inovasi Nasional (BRIN)
-- **Advisor**: Rumadi, S.T., M.T.
+## 🎓 Latar Belakang Magang
+- **Nama Mahasiswa**: Lutfia Aisyah Putri
+- **NIM**: 123450074
+- **Program Studi**: S1 Sains Data, Institut Teknologi Sumatera (ITERA)
+- **Periode Magang**: 1 Juli 2025 – 15 Agustus 2025
+- **Tempat Magang**: Pusat Riset Sains Data dan Informasi (PRSDI), Badan Riset dan Inovasi Nasional (BRIN)
+- **Pembimbing**: Rumadi, S.T., M.T.
