@@ -1,0 +1,27 @@
+# Ignore all files in save_models/
+save_models/*
+
+# Except the model configuration joblib files
+!save_models/*.joblib
+
+# Explicitly ignore nltk_data directory
+save_models/nltk_data/
+
+# Ignore uploaded files in uploads/
+uploads/*
+!uploads/.gitkeep
+
+# Ignore Python cache and bytecode
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore virtual environments
+venv/
+.venv/
+env/
+
+# Ignore OS files
+.DS_Store
+Thumbs.db

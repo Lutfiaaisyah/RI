@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Structuring Research Center</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <script src="https://cdn.plot.ly/plotly-3.0.1.min.js"></script>
+</head>
+<body>
+  <div class="container">
+
+    <!-- Hamburger -->
+    <button class="hamburger" id="hamburgerBtn">
+      <div class="hamburger-icon">
+        <div class="hamburger-line"></div>
+        <div class="hamburger-line"></div>
+        <div class="hamburger-line"></div>
+      </div>
+    </button>
+
+    <!-- Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <div class="logo-icon"></div>
+          Research Intelligence
+        </div>
+      </div>
+
+      <nav class="nav-menu">
+        <a href="#" class="nav-item active" data-page="home">
+          <div class="nav-icon">
+            <img src="{{ url_for('static', filename='img/dashboard.png') }}" alt="Dashboard" style="width: 24px; height: 24px;">
+          </div>
+          Home
+        </a>
+        <a href="#" class="nav-item" data-page="dashboard">
+          <div class="nav-icon">
+            <img src="{{ url_for('static', filename='img/dashboard.png') }}" alt="Dashboard" style="width: 24px; height: 24px;">
+          </div>
+          Dashboard
+        </a>
+        <a href="#" class="nav-item" data-page="upload">
+          <div class="nav-icon">
+            <img src="{{ url_for('static', filename='img/upload.png') }}" alt="Upload" style="width: 24px; height: 24px;">
+          </div>
+          Upload
+        </a>
+        <a href="#" class="nav-item" data-page="analisis">
+          <div class="nav-icon">
+            <img src="{{ url_for('static', filename='img/analisis.png') }}" alt="Analisis" style="width: 24px; height: 24px;">
+          </div>
+          Analisis Jurnal/Paper
+        </a>
+        <a href="#" class="nav-item back-item" data-page="home">
+          <div class="nav-icon">&larr;</div>
+          Back
+        </a>
+      </nav>
+    </div>
+
+    <!-- Main Area -->
+    <div class="main-area" id="mainArea">
+
+      <!-- Home Page -->
+      <section class="main-content" id="homePage">
+        <div class="home-background">
+          <div class="overlay-image"></div>
+          <div class="overlay-color"></div>
+        </div>
+
+        <div class="content-wrapper">
+          <h1 class="main-title"> Structuring Research Center</h1>
+          <p class="subtitle">
+            Proses sistematis untuk mengumpulkan, menganalisis, dan
+            menginterpretasikan informasi dan data yang relevan dengan kegiatan penelitian
+          </p>
+          <button class="cta-button" onclick="handleGetStarted()">Get Started</button>
+        </div>
+      </section>
+
+
+      <!-- Dashboard Page -->
+      <section id="dashboardPage" style="display: none;">
+        <div class="dashboard-container">
+          <div class="dashboard-header">
+            <h2>Dashboard Analytics</h2>
+          </div>
+
+          <div class="stats-cards">
+            <div class="card1">
+              <h3>3</h3>
+              <p>Total Documents</p>
+            </div>
+            <div class="card2">
+              <h3>3</h3>
+              <p>Total Research Group</p>
+            </div>
+            <div class="card3">
+              <h3>56</h3>
+              <p>Total Bidang Ilmu</p>
+            </div>
+          </div>
+
+          <div class="charts-section">
+            <div class="bar-chart">
+              <h3>Distribusi Fundamental Research Group</h3>
+              <div class="bar-chart-container">
+                <div class="bars">
+                  <div style="height: 60%; background: #FF6B6B; width: 30px;"></div>
+                  <div style="height: 80%; background: #FF9999; width: 30px;"></div>
+                  <div style="height: 45%; background: #FFCCCC; width: 30px;"></div>
+                  <div style="height: 90%; background: #FF6B6B; width: 30px;"></div>
+                  <div style="height: 70%; background: #FF9999; width: 30px;"></div>
+                </div>
+              </div>
+            </div>
+            <div class="donut-chart">
+              <h4>Distributi Researh Group</h4>
+              <div class="circle">
+                <div class="inner-circle">
+                  <span>Total</span>
+                  <span>100%</span>
+                </div>
+              </div>
+              <div class="label">BERTopic: 60%</div>
+              <div class="label">Keywords: 25%</div>
+              <div class="label">Others: 15%</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Upload Page -->
+      <section class="upload-wrapper" id="uploadPage" style="display: none;">
+        <div class="upload-card">
+          <h2 class="upload-title">Upload File</h2>
+          <div class="dropzone" id="dropzone">
+            <div class="file-icon">📄</div>
+            <p>Drop file here</p>
+            <input type="file" id="fileInput" accept=".csv,.xlsx" style="display:none;" />
+            <button class="upload-btn" id="uploadBtn">Upload File</button>
+            <p class="upload-info">Silakan unggah dokumen (CSV dan XLSX)</p>
+          </div>
+
+          <table class="file-table">
+            <thead>
+              <tr>
+                <th>Nama File</th>
+                <th>Size</th>
+                <th>Status</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="fileTableBody">
+              <!-- File rows injected here -->
+            </tbody>
+          </table>
+
+          <div class="dropdown-container">
+            <select class="dropdown" id="metodeAnalisis">
+              <option selected disabled>Pilih Metode Analisis</option>
+              <option value="bertopic">BERTopic</option>
+              <option value="keyword">Matching Keyword</option>
+            </select>
+          </div>
+
+          <button class="analyze-btn" id="runAnalysisBtn">Mulai Analisis</button>
+        </div>
+      </section>
+
+      <!-- Analisis Page -->
+      <section id="analisisPage" class="analisis-slide" style="display: none; padding:40px 20px;">
+        <div class="card">
+          <h2 class="center-text">Analisis Jurnal/Paper</h2>
+
+          <div id="analisisDefault" class="analisis-slide active">
+            <p class="center-text">Silakan pilih metode analisis terlebih dahulu di menu Upload.</p>
+          </div>
+          <div id="analisisBertopic" class="analisis-slide">
+            <h3>Hasil Analisis BERTopic</h3>
+
+            <!-- Plot akan dimasukkan di sini oleh JavaScript -->
+            <div id="hasilBertopic" class="plot-container">
+              <p class="placeholder">Belum ada hasil analisis.</p>
+            </div>
+
+            <!-- Parameter terbaik juga akan disisipkan secara dinamis -->
+            <div id="parameterTerbaik" class="parameter-box">
+              <p class="placeholder">Belum ada parameter ditemukan.</p>
+            </div>
+
+            <!-- Section untuk memilih cluster size dan generate topics -->
+            <div id="pilihClusterSize" style="margin-top: 20px; display: none;">
+              <div style="background: #f5f5f5; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                <h4 style="margin-bottom: 15px; color: #333;">Generate Topics with Labels</h4>
+                
+                <div style="margin-bottom: 15px;">
+                  <label for="minClusterInput" style="display: block; font-weight: bold; margin-bottom: 5px;">
+                    Pilih Min Cluster Size:
+                  </label>
+                  <select id="minClusterInput" style="width: 200px; padding: 8px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px;">
+                    <option value="" disabled selected>Pilih min cluster size</option>
+                  </select>
+                </div>
+
+                <button onclick="generateTopikDenganLabel()" 
+                        style="background: #2E8B57; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; font-weight: bold;">
+                  Generate Topics & Labels
+                </button>
+              </div>
+            </div>
+
+            <!-- Hasil topik dengan label -->
+            <div id="hasilTopik" style="margin-top: 20px;"></div>
+          </div>
+         <!-- RESEARCH GROUPS (BERTopic) -->
+          <div id="bertHierarchyAndGroups" style="margin-top:30px; display:none;">
+            <h3>Research Groups</h3>
+
+            <!-- (opsional) tombol hierarchy kalau masih dipakai -->
+            <div style="margin:12px 0;">
+              <button onclick="buildHierarchyBertDefault()"
+                style="background:#3b82f6;color:white;padding:8px 16px;border:0;border-radius:6px;cursor:pointer;font-weight:600;">
+                Build Hierarchy
+              </button>
+              <!-- gunakan fungsi BARU yang tidak merender markdown -->
+              <button onclick="generateResearchGroupsBert()"
+                style="background:#10b981;color:white;padding:8px 16px;border:0;border-radius:6px;cursor:pointer;font-weight:600;">
+                Generate Research Groups
+              </button>
+            </div>
+
+            <!-- (opsional) simpan kalau masih pakai hierarchy plot -->
+            <div id="bertHierarchyPlot" class="plot-container" style="margin-top:10px;"></div>
+
+            <!-- hanya tabel, tanpa markdown -->
+            <div id="bertGroupsResult" style="margin-top:16px;"></div>
+          </div>
+
+          <!--ESEARCH GROUPS (Keyword Matching) -->
+          <div id="analisisKeyword" class="analisis-slide">
+              <div class="keyword-container">
+                <h1 class="Keyword-title">Fundamental Research Group</h1>
+                  <div class="content-grid">
+                      <!-- Left Panel - Chart -->
+                      <div class="left-panel">
+                          <div class="chart-section">
+                              <h3 class="section-title">Top 10 Bidang Ilmu</h3>
+                              <div class="chart-container">
+                                  <!-- Image untuk menampilkan chart base64 dari Flask -->
+                                  <img id="topFieldsChartImg" 
+                                      alt="Top Fields Chart"
+                                      class="top-fields-chart">
+                                </div>       
+                                     
+                                  <!-- Fallback div untuk hasil jika diperlukan -->
+                                  <div id="hasilKeyword" ></div>
+                                  
+                                  <!-- Canvas lama disembunyikan karena kita pakai base64 dari backend -->
+                                  <canvas id="topFieldsChart" style="display: none;"></canvas>
+                              
+                          </div>
+                      </div>
+
+                      <!-- Right Panel -->
+                      <div class="right-panel">
+                          <!-- Dropdown Section -->
+                          <div class="dropdown-section">
+                              <h3 class="section-title">Jumlah Kelompok Fundamental Research</h3>
+                              <div class="dropdown-kelompok">
+                                  <select class="custom-dropdown" id="clusterSelector">
+                                      <option value="2">2 Kelompok</option>
+                                      <option value="3">3 Kelompok</option>
+                                      <option value="4">4 Kelompok</option>
+                                      <option value="5" selected>5 Kelompok</option>
+                                      <option value="6">6 Kelompok</option>
+                                      <option value="7">7 Kelompok</option>
+                                      <option value="8">8 Kelompok</option>
+                                      <option value="9">9 Kelompok</option>
+                                      <option value="10">10 Kelompok</option>
+                                  </select>
+                              </div>
+                          </div>
+
+                          <!-- Recommendation Section -->
+                          <div class="recommendation-section">
+                              <h3 class="section-title">Rekomendasi Fokus Riset Utama</h3>
+                              <div class="recommendation-card">
+                                  <div class="empty-state">
+                                      <p>Pilih file dan jalankan analisis keyword matching untuk melihat rekomendasi</p>
+                                  </div>
+                              </div>
+                          </div>    
+                        </div>
+                      </div>
+                          <!-- Bottom Panel -->
+                           <div class="bottom-panel">
+                              <div class="fundamental-groups-list">
+                                  <!-- Groups akan ditampilkan di sini -->
+                              </div>
+                           </div>                  
+              </div>
+          </div>      
+      </section>
+    </div>
+  </div>
+  <script>
+  document.getElementById('uploadBtn').addEventListener('click', function () {
+    const btn = this;
+    if (btn.disabled) return; // Cegah klik ganda
+
+    btn.disabled = true; // Disable tombol
+    btn.textContent = 'Uploading...'; // Opsional: ubah teks tombol
+
+    // Simulasi proses upload
+    const fileInput = document.getElementById('fileInput');
+    if (fileInput.files.length === 0) {
+      alert('Silakan pilih file terlebih dahulu.');
+      btn.disabled = false;
+      btn.textContent = 'Upload'; // Kembalikan teks
+      return;
+    }
+
+    // Lanjutkan proses upload (misalnya AJAX atau Form Submit)
+    // Setelah selesai:
+    setTimeout(() => {
+      btn.disabled = false;
+      btn.textContent = 'Upload'; // Kembalikan teks
+    }, 3000); // Simulasi delay 3 detik
+  });
+  </script>
+
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
